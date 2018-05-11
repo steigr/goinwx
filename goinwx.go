@@ -1,37 +1,21 @@
 package goinwx
 
 import (
-	"log"
 	"net/url"
-	"os"
 
 	"fmt"
 
 	"github.com/andrexus/xmlrpc"
-	"github.com/hashicorp/logutils"
+
+	"github.com/golang/glog"
 )
 
 const (
-	libraryVersion    = "0.3.2"
-	logLevelEnvName   = "GOINWX_LOG"
+	libraryVersion    = "0.3.3"
 	APIBaseUrl        = "https://api.domrobot.com/xmlrpc/"
 	APISandboxBaseUrl = "https://api.ote.domrobot.com/xmlrpc/"
 	APILanguage       = "eng"
 )
-
-func init() {
-	logLevel := os.Getenv(logLevelEnvName)
-	if logLevel == "" {
-		logLevel = "INFO"
-	}
-
-	filter := &logutils.LevelFilter{
-		Levels:   []logutils.LogLevel{"DEBUG", "INFO"},
-		MinLevel: logutils.LogLevel(logLevel),
-		Writer:   os.Stderr,
-	}
-	log.SetOutput(filter)
-}
 
 // Client manages communication with INWX API.
 type Client struct {
@@ -102,7 +86,7 @@ func NewClient(username, password string, opts *ClientOptions) *Client {
 
 	rpcClient, _ := xmlrpc.NewClient(baseURL.String(), nil)
 
-	log.Printf("[DEBUG] Base URL: %s\n", baseURL)
+	glog.V(5).Info("Base URL: %s\n", baseURL)
 
 	client := &Client{RPCClient: rpcClient,
 		BaseURL:  baseURL,
@@ -131,7 +115,7 @@ func (c *Client) NewRequest(serviceMethod string, args map[string]interface{}) *
 func (c *Client) Do(req Request) (*map[string]interface{}, error) {
 	var resp Response
 	err := c.RPCClient.Call(req.ServiceMethod, req.Args, &resp)
-	log.Printf("[DEBUG] Response: %v", resp)
+	glog.V(9).Info("Response: %v", resp)
 	if err != nil {
 		return nil, err
 	}
