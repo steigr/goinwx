@@ -146,7 +146,7 @@ type Contact struct {
 	Fax           string
 	Email         string
 	Remarks       string
-	Protection    int
+	Protection    string
 }
 
 type DomainListRequest struct {
