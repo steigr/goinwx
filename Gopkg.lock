@@ -14,12 +14,6 @@
   version = "v1.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/hashicorp/logutils"
-  packages = ["."]
-  revision = "0dc08b1671f34c4250ce212759ebd880f743d883"
-
-[[projects]]
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   revision = "5a0325d7fafaac12dda6e7fb8bd222ec1b69875e"
