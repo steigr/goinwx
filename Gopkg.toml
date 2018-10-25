@@ -1,5 +1,6 @@
 [[constraint]]
-  name = "github.com/andrexus/xmlrpc"
+  name = "github.com/kolo/xmlrpc"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/fatih/structs"
@@ -7,3 +8,4 @@
 
 [[constraint]]
   name = "github.com/mitchellh/mapstructure"
+  version = "v1.1.2"

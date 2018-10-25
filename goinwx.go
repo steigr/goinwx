@@ -5,13 +5,13 @@ import (
 
 	"fmt"
 
-	"github.com/andrexus/xmlrpc"
+	"github.com/kolo/xmlrpc"
 
 	"github.com/golang/glog"
 )
 
 const (
-	libraryVersion    = "0.3.3"
+	libraryVersion    = "0.4.0"
 	APIBaseUrl        = "https://api.domrobot.com/xmlrpc/"
 	APISandboxBaseUrl = "https://api.ote.domrobot.com/xmlrpc/"
 	APILanguage       = "eng"

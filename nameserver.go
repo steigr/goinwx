@@ -26,7 +26,7 @@ const (
 type NameserverService interface {
 	Check(domain string, nameservers []string) (*NameserverCheckResponse, error)
 	Create(*NameserverCreateRequest) (int, error)
-	Info(domain string, domainId int) (*NamserverInfoResponse, error)
+	Info(*NameserverInfoRequest) (*NamserverInfoResponse, error)
 	List(domain string) (*NamserverListResponse, error)
 	CreateRecord(*NameserverRecordRequest) (int, error)
 	UpdateRecord(recId int, request *NameserverRecordRequest) error
@@ -74,6 +74,17 @@ type NameserverCreateRequest struct {
 	UrlRedirectFavIcon     string   `structs:"urlRedirectFavIcon,omitempty"`
 	UrlRedirectKeywords    string   `structs:"urlRedirectKeywords,omitempty"`
 	Testing                bool     `structs:"testing,omitempty"`
+}
+
+type NameserverInfoRequest struct {
+	Domain   string `structs:"domain,omitempty"`
+	RoId     int    `structs:"roId,omitempty"`
+	RecordId int    `structs:"recordId,omitempty"`
+	Type     string `structs:"type,omitempty"`
+	Name     string `structs:"name,omitempty"`
+	Content  string `structs:"content,omitempty"`
+	Ttl      int    `structs:"ttl,omitempty"`
+	Prio     int    `structs:"prio,omitempty"`
 }
 
 type NamserverInfoResponse struct {
@@ -139,16 +150,8 @@ func (s *NameserverServiceOp) Check(domain string, nameservers []string) (*Names
 	return &result, nil
 }
 
-func (s *NameserverServiceOp) Info(domain string, domainId int) (*NamserverInfoResponse, error) {
-	var requestMap = make(map[string]interface{})
-
-	if domain != "" {
-		requestMap["domain"] = domain
-	}
-	if domainId != 0 {
-		requestMap["roId"] = domainId
-	}
-	req := s.client.NewRequest(methodNameserverInfo, requestMap)
+func (s *NameserverServiceOp) Info(request *NameserverInfoRequest) (*NamserverInfoResponse, error) {
+	req := s.client.NewRequest(methodNameserverInfo, structs.Map(request))
 
 	resp, err := s.client.Do(*req)
 	if err != nil {
@@ -261,7 +264,7 @@ func (s *NameserverServiceOp) FindRecordById(recId int) (*NameserverRecord, *Nam
 	}
 
 	for _, domainItem := range listResp.Domains {
-		resp, err := s.client.Nameservers.Info("", domainItem.RoId)
+		resp, err := s.client.Nameservers.Info(&NameserverInfoRequest{RoId: domainItem.RoId})
 		if err != nil {
 			return nil, nil, err
 		}
