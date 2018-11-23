@@ -156,7 +156,7 @@ func (s *NameserverServiceOp) Info(request *NameserverInfoRequest) (*NamserverIn
 		return nil, err
 	}
 	var result NamserverInfoResponse
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.WeakDecode(*resp, &result)
 	if err != nil {
 		return nil, err
 	}
